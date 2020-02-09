@@ -18,7 +18,7 @@ public interface PersonRepository  extends MongoRepository<Person, String>{
 	public Optional<Person> findByObjectId(String id);
 	
 	@Query("{'firstName': ?0, 'lastName': ?1}")
-	public Person findByName(String firstName, String lastName) ;
+	public Optional<Person> findByName(String firstName, String lastName) ;
 	
 	@Query(value="{id : $0}", delete = true)
 	public void deleteById(String id);

@@ -25,8 +25,7 @@ public class PersonService {
 		if (isExists(person)) {
 			throw new PersonAlreadyExistsException("Person with given first name and last name already exists");
 		}
-		Person p = personRepository.save(person);
-		return p;
+		return personRepository.save(person);
 	}
 
 	public List<Person> getAll() {
@@ -39,15 +38,13 @@ public class PersonService {
 		if (person.isPresent()) {
 			return person.get();
 		}
-		return null;
-		// throw new PersonNotFoundException("Could not person object");
-
+		throw new PersonNotFoundException("Could not person object");
 	}
 
 	public Person getByLastName(String lastName) throws PersonNotFoundException {
-		Optional<Person> person= personRepository.findByLastName(lastName);
+		Optional<Person> person = personRepository.findByLastName(lastName);
 		if (person.isPresent()) {
-			return person.get();			
+			return person.get();
 		}
 		throw new PersonNotFoundException("Could not find person with name " + lastName);
 	}
@@ -62,11 +59,8 @@ public class PersonService {
 	}
 
 	public Person update(String id, Person pPerson) throws PersonNotFoundException {
-		
 		Optional<Person> toUpdate = personRepository.findByObjectId(id);
-		System.out.println("found record "+ toUpdate.isPresent());
-		
-//		return pPerson;
+
 		if (toUpdate.isPresent()) {
 			Person person = toUpdate.get();
 			person.setFirstName(pPerson.getFirstName());
@@ -83,7 +77,7 @@ public class PersonService {
 		if (toDelete.isPresent()) {
 			personRepository.deletePersonById(id);
 			return id;
-		}		
+		}
 		throw new PersonNotFoundException("Person with given id does not exists");
 	}
 
@@ -99,12 +93,11 @@ public class PersonService {
 			return String.valueOf(idDeleted);
 		}
 		throw new PersonNotFoundException("Person with given id does not exists");
-
 	}
 
-	private boolean isExists(Person person) {
-		Person p = personRepository.findByName(person.getFirstName(), person.getLastName());
-		return false;
+	private boolean isExists(Person pers) {
+		Optional<Person> person = personRepository.findByName(pers.getFirstName(), pers.getLastName());
+		return person.isPresent();
 	}
 
 }
