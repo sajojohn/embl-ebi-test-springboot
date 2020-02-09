@@ -70,5 +70,13 @@ public class PersonController {
 		System.out.println("in the controller delete all");
 		personService.deleteAll();
 	}
+	
+	@RequestMapping(method = RequestMethod.DELETE, value="/api/persons/by-firstname/{firstName}")
+	public void deleteByFirstName(@PathVariable String firstName) throws PersonNotFoundException {
+		System.out.println("in the controller delete by firstname");
+		personService.deleteByFirstName(firstName);
+	}
+	
+	
 
 }

@@ -23,7 +23,6 @@ public class PersonService {
 	
 	public Person create (Person person) throws PersonAlreadyExistsException {
 		if(isExists(person)) {
-			System.out.println("Throwsing errorrrrrrrrrrrrrrrrrrrrrrrrrr");
 			throw new PersonAlreadyExistsException("Person with given first name and last name already exists");
 		}
 		Person p = personRepository.save(person);
@@ -79,9 +78,12 @@ public class PersonService {
 		
 		if(toDelete.isPresent()) {
 			System.out.println("person found to delete" + toDelete.get());
-			toDelete = null;
+			
+//			toDelete = null;
 //			 personRepository.delete(toDelete.get());			
-			 personRepository.deleteById(id);
+//			 personRepository.delete(toDelete.get());
+			personRepository.deletePersonById(id);
+			 
 			 return id;
 		}
 		System.out.println("could not find person to delete");
@@ -92,9 +94,17 @@ public class PersonService {
 		personRepository.deleteAll();
 	}
 	
+	public void deleteByFirstName(String firstName) {
+		System.out.println("deleting by first name "+ firstName);
+		Person person = personRepository.findByFirstName(firstName);
+		System.out.println("person found "+ person);
+		personRepository.delete(person);
+		
+	}
+	
+	
 	private boolean isExists(Person person) {
 		Person p = personRepository.findByName(person.getFirstName(), person.getLastName());
-		System.out.println("found "+ p);
 		return false;
 	}
 	
