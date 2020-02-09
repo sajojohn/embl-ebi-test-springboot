@@ -11,8 +11,8 @@ import com.embl.model.Person;
 
 @Repository
 public interface PersonRepository  extends MongoRepository<Person, String>{
-	public Person findByFirstName(String firstName);
-	public Person findByLastName(String lastName);
+	public Optional<Person> findByFirstName(String firstName);
+	public Optional<Person> findByLastName(String lastName);
 	public List<Person>  findByCountry(String country);
 	@Query("{'_id': ?0}")
 	public Optional<Person> findByObjectId(String id);
