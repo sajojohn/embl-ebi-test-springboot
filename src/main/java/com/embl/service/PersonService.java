@@ -41,6 +41,13 @@ public class PersonService {
 		throw new PersonNotFoundException("Could not person object");
 	}
 
+	public List<Person> getByIds(String ids) throws PersonNotFoundException {
+		String[] idsToSearch = ids.split(",");
+		List<Person> personList = personRepository.findByObjectIds(idsToSearch);
+		return personList;
+
+	}
+
 	public Person getByLastName(String lastName) throws PersonNotFoundException {
 		Optional<Person> person = personRepository.findByLastName(lastName);
 		if (person.isPresent()) {

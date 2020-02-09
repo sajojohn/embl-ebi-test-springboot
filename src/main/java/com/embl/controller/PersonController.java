@@ -25,7 +25,7 @@ public class PersonController {
 
 	@RequestMapping(method = RequestMethod.POST, value = "/api/persons")
 	public ResponseEntity<Person> create(@RequestBody Person person) throws PersonAlreadyExistsException {
-		System.out.println("add person "+ person);
+		System.out.println("add person " + person);
 		return new ResponseEntity<Person>(personService.create(person), HttpStatus.CREATED);
 	}
 
@@ -37,26 +37,32 @@ public class PersonController {
 
 	@RequestMapping(method = RequestMethod.GET, value = "/api/persons/{id}")
 	public Person getById(@PathVariable String id) throws PersonNotFoundException {
-		System.out.println("get person by id "+ id);
+		System.out.println("get person by id " + id);
 		return personService.getById(id);
+	}
+
+	@RequestMapping(method = RequestMethod.GET, value = "/api/persons/by-ids/{ids}")
+	public List<Person> getByIds(@PathVariable String ids) throws PersonNotFoundException {
+		System.out.println("get person by ids " + ids);
+		return personService.getByIds(ids);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/api/persons/by-firstname/{firstName}")
 	public Person getByFirstName(@PathVariable String firstName) throws PersonNotFoundException {
-		System.out.println("get person by first name "+ firstName);
+		System.out.println("get person by first name " + firstName);
 		return personService.getByFirstName(firstName);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/api/persons/by-lastname/{lastName}")
 	public Person getBylastName(@PathVariable String lastName) throws PersonNotFoundException {
-		System.out.println("get person by last name "+ lastName);
+		System.out.println("get person by last name " + lastName);
 		return personService.getByFirstName(lastName);
 	}
 
 	@RequestMapping(method = RequestMethod.PATCH, value = "/api/persons/{id}")
 	public ResponseEntity<Person> update(@PathVariable String id, @RequestBody Person person)
 			throws PersonNotFoundException {
-		System.out.println("update person by id "+ id + " with "+ person);
+		System.out.println("update person by id " + id + " with " + person);
 		Person updated = personService.update(id, person);
 		return new ResponseEntity<Person>(updated, HttpStatus.OK);
 
