@@ -8,8 +8,11 @@ import org.springframework.stereotype.Service;
 
 import com.embl.exceptions.PersonAlreadyExistsException;
 import com.embl.exceptions.PersonNotFoundException;
+import com.embl.input.PersonInput;
 import com.embl.model.Person;
 import com.embl.repository.PersonRepository;
+
+import ch.qos.logback.core.joran.util.beans.BeanUtil;
 
 @Service
 public class PersonService {
@@ -21,11 +24,13 @@ public class PersonService {
 		return personRepository.save(new Person(firstName, lastName, country));
 	}
 
-	public Person create(Person person) throws PersonAlreadyExistsException {
+	public Person create(PersonInput person) throws PersonAlreadyExistsException {
+		
 		if (isExists(person)) {
 			throw new PersonAlreadyExistsException("Person with given first name and last name already exists");
 		}
-		return personRepository.save(person);
+		Person p = new Person(person.getFirstName(), person.getLastName(), person.getCountry());
+		return personRepository.save(p);
 	}
 
 	public List<Person> getAll() {
@@ -102,7 +107,7 @@ public class PersonService {
 		throw new PersonNotFoundException("Person with given id does not exists");
 	}
 
-	private boolean isExists(Person pers) {
+	private boolean isExists(PersonInput pers) {
 		Optional<Person> person = personRepository.findByName(pers.getFirstName(), pers.getLastName());
 		return person.isPresent();
 	}

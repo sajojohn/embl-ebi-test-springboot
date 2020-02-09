@@ -1,5 +1,7 @@
 package com.embl.model;
 
+import javax.validation.constraints.NotNull;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -8,6 +10,7 @@ public class Person {
 	
 	@Id
 	String id;
+	@NotNull(message =" First name can not be null")
 	String firstName;
 	String lastName;
 	String country;
