@@ -3,16 +3,10 @@ package com.embl.controller;
 import java.util.List;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.lang.NonNull;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,20 +24,23 @@ import com.embl.service.PersonService;
 @RestController
 public class PersonController {
 	@Autowired
-	private PersonService personService;
+	private PersonService personService; 
 
 
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/api/persons")
-	public ResponseEntity<Person> create(@Valid @RequestBody PersonInput person) throws PersonAlreadyExistsException {
+	public ResponseEntity<PersonInput> create(@Valid @RequestBody PersonInput person) throws PersonAlreadyExistsException {
 		System.out.println("add person " + person);
-		return new ResponseEntity<Person>(personService.create(person), HttpStatus.CREATED);
+		return new ResponseEntity<PersonInput>(personService.create(person), HttpStatus.CREATED);
 	}
 
 	@RequestMapping("/api/persons")
-	public List<Person> getAll() {
+	public ResponseEntity<List<PersonInput>> getAll() {
 		System.out.println("get all persons ");
-		return personService.getAll();
+		System.out.println("from service " + personService.getAll());
+		List<PersonInput> list = personService.getAll();
+		System.out.println("controller returnung " + list);
+		return new ResponseEntity<List<PersonInput>>(list, HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/api/persons/{id}")

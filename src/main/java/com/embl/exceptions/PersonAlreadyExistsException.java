@@ -22,4 +22,9 @@ public class PersonAlreadyExistsException extends Exception{
 	public void setMessage(String message) {
 		this.message = message;
 	}
+	
+	@Override
+    public synchronized Throwable fillInStackTrace() {
+        return this;
+    }
 }

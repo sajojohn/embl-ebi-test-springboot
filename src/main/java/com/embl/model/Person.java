@@ -1,5 +1,7 @@
 package com.embl.model;
 
+import java.util.List;
+
 import javax.validation.constraints.NotNull;
 
 import org.springframework.data.annotation.Id;
@@ -7,19 +9,23 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
 public class Person {
-	
+
 	@Id
 	String id;
-	@NotNull(message =" First name can not be null")
+	@NotNull(message = " First name can not be null")
 	String firstName;
 	String lastName;
-	String country;
-	
-	public Person(String firstName, String lastName, String country) {
-		super();		
+	Integer age;
+	String favouriteColour;
+	List<String> hobby;
+
+	public Person(String firstName, String lastName, Integer age,
+			String favouriteColour, List<String> hobby) {
 		this.firstName = firstName;
 		this.lastName = lastName;
-		this.country = country;
+		this.age = age;
+		this.favouriteColour = favouriteColour;
+		this.hobby = hobby;
 	}
 
 	public String getId() {
@@ -46,20 +52,34 @@ public class Person {
 		this.lastName = lastName;
 	}
 
-	public String getCountry() {
-		return country;
+	public Integer getAge() {
+		return age;
 	}
 
-	public void setCountry(String country) {
-		this.country = country;
+	public void setAge(Integer age) {
+		this.age = age;
+	}
+
+	public String getFavouriteColour() {
+		return favouriteColour;
+	}
+
+	public void setFavouriteColour(String favouriteColour) {
+		this.favouriteColour = favouriteColour;
+	}
+
+	public List<String> getHobby() {
+		return hobby;
+	}
+
+	public void setHobby(List<String> hobby) {
+		this.hobby = hobby;
 	}
 
 	@Override
 	public String toString() {
-		return "Person [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", country=" + country
-				+ "]";
+		return "Person [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", age=" + age
+				+ ", favouriteColour=" + favouriteColour + ", hobby=" + hobby + "]";
 	}
-	
-	
 
 }

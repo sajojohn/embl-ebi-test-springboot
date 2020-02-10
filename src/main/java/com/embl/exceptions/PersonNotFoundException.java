@@ -21,5 +21,10 @@ public class PersonNotFoundException extends Exception{
 	public void setMessage(String message) {
 		this.message = message;
 	}
+	
+	@Override
+    public synchronized Throwable fillInStackTrace() {
+        return this;
+    }
 
 }

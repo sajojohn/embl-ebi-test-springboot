@@ -11,11 +11,11 @@ import com.embl.model.Person;
 
 @Repository
 public interface PersonRepository extends MongoRepository<Person, String> {
-	public Optional<Person> findByFirstName(String firstName);
+	public Optional<Person> findByFirstNameIgnoreCase(String firstName);
 
-	public Optional<Person> findByLastName(String lastName);
+	public Optional<Person> findByLastNameIgnoreCase(String lastName);
 
-	public List<Person> findByCountry(String country);
+	public List<Person> findByAge(Integer age);
 
 	@Query("{'_id': ?0}")
 	public Optional<Person> findByObjectId(String id);
@@ -23,8 +23,10 @@ public interface PersonRepository extends MongoRepository<Person, String> {
 	@Query("{'_id': {$in: ?0}}")
 	public List<Person> findByObjectIds(String[] ids);
 
-	@Query("{'firstName': ?0, 'lastName': ?1}")
-	public Optional<Person> findByName(String firstName, String lastName);
+//	@Query("{'firstName': ?0, 'lastName': ?1}")
+//	public Optional<Person> findByName(String firstName, String lastName);
+	
+	public Optional<Person> findByFirstNameAndLastName(String firstName, String lastName);
 
 	@Query(value = "{id : $0}", delete = true)
 	public void deleteById(String id);
