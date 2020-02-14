@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,19 +22,18 @@ import com.embl.input.PersonInput;
 import com.embl.model.Person;
 import com.embl.service.PersonService;
 
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 public class PersonController {
 	@Autowired
 	private PersonService personService; 
-
-
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/api/persons")
 	public ResponseEntity<PersonInput> create(@Valid @RequestBody PersonInput person) throws PersonAlreadyExistsException {
 		System.out.println("add person " + person);
 		return new ResponseEntity<PersonInput>(personService.create(person), HttpStatus.CREATED);
 	}
-
+	
 	@RequestMapping("/api/persons")
 	public ResponseEntity<List<PersonInput>> getAll() {
 		System.out.println("get all persons ");
@@ -68,14 +68,14 @@ public class PersonController {
 	}
 
 	@RequestMapping(method = RequestMethod.PATCH, value = "/api/persons/{id}")
-	public ResponseEntity<Person> update(@PathVariable String id, @RequestBody Person person)
+	public ResponseEntity<Person> update(@PathVariable String id, @RequestBody PersonInput person)
 			throws PersonNotFoundException {
 		System.out.println("update person by id " + id + " with " + person);
 		Person updated = personService.update(id, person);
 		return new ResponseEntity<Person>(updated, HttpStatus.OK);
 
 	}
-
+	@CrossOrigin(origins = "http://localhost:3000")
 	@RequestMapping(method = RequestMethod.DELETE, value = "/api/persons/{id}")
 	public void deletePerson(@PathVariable String id) throws PersonNotFoundException {
 		System.out.println("delete person by id" + id);

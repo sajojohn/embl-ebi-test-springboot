@@ -71,13 +71,13 @@ public class PersonService {
 
 	}
 
-	public Person update(String id, Person pPerson) throws PersonNotFoundException {
+	public Person update(String id, PersonInput pPerson) throws PersonNotFoundException {
 		Optional<Person> toUpdate = personRepository.findByObjectId(id);
 
 		if (toUpdate.isPresent()) {
 			Person person = toUpdate.get();
-			person.setFirstName(pPerson.getFirstName());
-			person.setLastName(pPerson.getLastName());
+			person.setFirstName(pPerson.getFirst_name());
+			person.setLastName(pPerson.getLast_name());
 			person.setAge(pPerson.getAge());
 			return personRepository.save(person);
 		}
