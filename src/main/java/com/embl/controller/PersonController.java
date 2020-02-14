@@ -36,8 +36,7 @@ public class PersonController {
 	
 	@RequestMapping("/api/persons")
 	public ResponseEntity<List<PersonInput>> getAll() {
-		System.out.println("get all persons ");
-		System.out.println("from service " + personService.getAll());
+		System.out.println("get all persons ");		
 		List<PersonInput> list = personService.getAll();
 		System.out.println("controller returnung " + list);
 		return new ResponseEntity<List<PersonInput>>(list, HttpStatus.OK);
