@@ -18,7 +18,7 @@ import com.embl.repository.PersonRepository;
 public class PersonService {
 
 	@Autowired
-	private PersonRepository personRepository;
+	private PersonRepository personRepository; 
 
 	public PersonInput create(String firstName, String lastName, Integer age) {
 		return copy(personRepository.save(new Person(firstName, lastName, age, null, null)));
@@ -30,7 +30,6 @@ public class PersonService {
 			throw new PersonAlreadyExistsException("Person with given first name and last name already exists");
 		}
 		Person p = new Person(person.getFirst_name(), person.getLast_name(), person.getAge(), person.getFavourite_colour(), person.getHobby());
-		System.out.println("person created " + p);
 		return copy(personRepository.save(p));
 	}
 
@@ -38,40 +37,40 @@ public class PersonService {
 		return copy(personRepository.findAll());
 	}
 
-	public Person getById(String id) throws PersonNotFoundException {
+	public PersonInput getById(String id) throws PersonNotFoundException {
 		Optional<Person> person = personRepository.findByObjectId(id);
 		System.out.println("searching person byy id " + person);
 		if (person.isPresent()) {
-			return person.get();
+			return copy(person.get());
 		}
 		throw new PersonNotFoundException("Could not person object");
 	}
 
-	public List<Person> getByIds(String ids) throws PersonNotFoundException {
+	public List<PersonInput> getByIds(String ids) throws PersonNotFoundException {
 		String[] idsToSearch = ids.split(",");
 		List<Person> personList = personRepository.findByObjectIds(idsToSearch);
-		return personList;
+		return copy(personList);
 
 	}
 
-	public Person getByLastName(String lastName) throws PersonNotFoundException {
+	public PersonInput getByLastName(String lastName) throws PersonNotFoundException {
 		Optional<Person> person = personRepository.findByLastNameIgnoreCase(lastName);
 		if (person.isPresent()) {
-			return person.get();
+			return copy(person.get());
 		}
 		throw new PersonNotFoundException("Could not find person with name " + lastName);
 	}
 
-	public Person getByFirstName(String firstName) throws PersonNotFoundException {
+	public PersonInput getByFirstName(String firstName) throws PersonNotFoundException {
 		Optional<Person> person = personRepository.findByFirstNameIgnoreCase(firstName);
 		if (person.isPresent()) {
-			return person.get();
+			return copy(person.get());
 		}
 		throw new PersonNotFoundException("Could not find person with name " + firstName);
 
 	}
 
-	public Person update(String id, PersonInput pPerson) throws PersonNotFoundException {
+	public PersonInput update(String id, PersonInput pPerson) throws PersonNotFoundException {
 		Optional<Person> toUpdate = personRepository.findByObjectId(id);
 
 		if (toUpdate.isPresent()) {
@@ -79,7 +78,9 @@ public class PersonService {
 			person.setFirstName(pPerson.getFirst_name());
 			person.setLastName(pPerson.getLast_name());
 			person.setAge(pPerson.getAge());
-			return personRepository.save(person);
+			person.setFavouriteColour(pPerson.getFavourite_colour());
+			person.setHobby(pPerson.getHobby());
+			return copy(personRepository.save(person));
 		}
 		throw new PersonNotFoundException("Could not update record");
 	}

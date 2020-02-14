@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.embl.exceptions.PersonAlreadyExistsException;
 import com.embl.exceptions.PersonNotFoundException;
 import com.embl.input.PersonInput;
-import com.embl.model.Person;
 import com.embl.service.PersonService;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -36,61 +35,50 @@ public class PersonController {
 	
 	@RequestMapping("/api/persons")
 	public ResponseEntity<List<PersonInput>> getAll() {
-		System.out.println("get all persons ");		
 		List<PersonInput> list = personService.getAll();
-		System.out.println("controller returnung " + list);
 		return new ResponseEntity<List<PersonInput>>(list, HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/api/persons/{id}")
-	public Person getById(@PathVariable  String id) throws PersonNotFoundException {
+	public PersonInput getById(@PathVariable  String id) throws PersonNotFoundException {
 		System.out.println("get person by id " + id);
 		return personService.getById(id);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/api/persons/by-ids/{ids}")
-	public List<Person> getByIds(@PathVariable String ids) throws PersonNotFoundException {
+	public List<PersonInput> getByIds(@PathVariable String ids) throws PersonNotFoundException {
 		System.out.println("get person by ids " + ids);
 		return personService.getByIds(ids);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/api/persons/by-firstname/{firstName}")
-	public Person getByFirstName(@PathVariable String firstName) throws PersonNotFoundException {
+	public PersonInput getByFirstName(@PathVariable String firstName) throws PersonNotFoundException {
 		System.out.println("get person by first name " + firstName);
 		return personService.getByFirstName(firstName);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/api/persons/by-lastname/{lastName}")
-	public Person getBylastName(@PathVariable String lastName) throws PersonNotFoundException {
+	public PersonInput getBylastName(@PathVariable String lastName) throws PersonNotFoundException {
 		System.out.println("get person by last name " + lastName);
 		return personService.getByFirstName(lastName);
 	}
 
 	@RequestMapping(method = RequestMethod.PATCH, value = "/api/persons/{id}")
-	public ResponseEntity<Person> update(@PathVariable String id, @RequestBody PersonInput person)
+	public ResponseEntity<PersonInput> update(@PathVariable String id, @RequestBody PersonInput person)
 			throws PersonNotFoundException {
-		System.out.println("update person by id " + id + " with " + person);
-		Person updated = personService.update(id, person);
-		return new ResponseEntity<Person>(updated, HttpStatus.OK);
+		PersonInput updated = personService.update(id, person);
+		return new ResponseEntity<PersonInput>(updated, HttpStatus.OK);
 
 	}
-	@CrossOrigin(origins = "http://localhost:3000")
+	@CrossOrigin(origins = "http://localhost:3000") 
 	@RequestMapping(method = RequestMethod.DELETE, value = "/api/persons/{id}")
-	public void deletePerson(@PathVariable String id) throws PersonNotFoundException {
-		System.out.println("delete person by id" + id);
-		personService.deleteById(id);
+	public String deletePerson(@PathVariable String id) throws PersonNotFoundException {
+		return personService.deleteById(id);
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE, value = "/api/persons/deleteall")
 	public void deleteAllPerson() throws PersonNotFoundException {
-		System.out.println("delete all persons");
 		personService.deleteAll();
 	}
-
-	@RequestMapping(method = RequestMethod.DELETE, value = "/api/persons/by-firstname/{firstName}")
-	public void deleteByFirstName(@PathVariable String firstName) throws PersonNotFoundException {
-		System.out.println("delete person by first name " + firstName);
-		personService.deleteByFirstName(firstName);
-	}
-
+	
 }
