@@ -1,6 +1,5 @@
 package com.embl.model;
 
-import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
@@ -17,10 +16,10 @@ public class Person {
 	String lastName;
 	Integer age;
 	String favouriteColour;
-	List<String> hobby;
+	String hobby;
 
 	public Person(String firstName, String lastName, Integer age,
-			String favouriteColour, List<String> hobby) {
+			String favouriteColour, String hobby) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.age = age;
@@ -68,11 +67,11 @@ public class Person {
 		this.favouriteColour = favouriteColour;
 	}
 
-	public List<String> getHobby() {
+	public String getHobby() {
 		return hobby;
 	}
 
-	public void setHobby(List<String> hobby) {
+	public void setHobby(String hobby) {
 		this.hobby = hobby;
 	}
 

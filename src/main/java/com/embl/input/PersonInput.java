@@ -1,6 +1,5 @@
 package com.embl.input;
 
-import java.util.List;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
@@ -23,7 +22,7 @@ public class PersonInput {
 	
 	private String favourite_colour;
 	
-	private List<String> hobby;
+	private String hobby;
 	
 
 	public PersonInput() {
@@ -40,7 +39,7 @@ public class PersonInput {
 	
 	
 	public PersonInput(String id, @NotNull @NotEmpty String first_name, @NotNull @NotEmpty String last_name,
-			@Min(1) Integer age, String favourite_colour, List<String> hobby) {
+			@Min(1) Integer age, String favourite_colour, String hobby) {
 		super();
 		this.id = id;
 		this.first_name = first_name;
@@ -50,7 +49,7 @@ public class PersonInput {
 		this.hobby = hobby;
 	}
 	public PersonInput( @NotNull @NotEmpty String first_name, @NotNull @NotEmpty String last_name,
-			@Min(1) Integer age, String favourite_colour, List<String> hobby) {
+			@Min(1) Integer age, String favourite_colour, String hobby) {
 		super();
 		this.first_name = first_name;
 		this.last_name = last_name;
@@ -85,10 +84,10 @@ public class PersonInput {
 	public void setFavourite_colour(String favourite_colour) {
 		this.favourite_colour = favourite_colour;
 	}
-	public List<String> getHobby() {
+	public String getHobby() {
 		return hobby;
 	}
-	public void setHobby(List<String> hobby) {
+	public void setHobby(String hobby) {
 		this.hobby = hobby;
 	}
 	public void setAge(Integer age) {
