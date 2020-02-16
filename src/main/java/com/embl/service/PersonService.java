@@ -13,23 +13,20 @@ import com.embl.input.PersonInput;
 import com.embl.model.Person;
 import com.embl.repository.PersonRepository;
 
-
 @Service
 public class PersonService {
 
 	@Autowired
-	private PersonRepository personRepository; 
+	private PersonRepository personRepository;
 
-	public PersonInput create(String firstName, String lastName, Integer age) {
-		return copy(personRepository.save(new Person(firstName, lastName, age, null, null)));
-	}
 
 	public PersonInput create(PersonInput person) throws PersonAlreadyExistsException {
-		
+
 		if (isExists(person)) {
 			throw new PersonAlreadyExistsException("Person with given first name and last name already exists");
 		}
-		Person p = new Person(person.getFirst_name(), person.getLast_name(), person.getAge(), person.getFavourite_colour(), person.getHobby());
+		Person p = new Person(person.getFirst_name(), person.getLast_name(), person.getAge(),
+				person.getFavourite_colour(), person.getHobby());
 		return copy(personRepository.save(p));
 	}
 
@@ -53,18 +50,28 @@ public class PersonService {
 
 	}
 
-	public PersonInput getByLastName(String lastName) throws PersonNotFoundException {
-		Optional<Person> person = personRepository.findByLastNameIgnoreCase(lastName);
-		if (person.isPresent()) {
+	public List<PersonInput> getByLastName(String lastName) throws PersonNotFoundException {
+		Optional<List<Person>> person = personRepository.findByLastNameIgnoreCase(lastName);
+		if (person.isPresent() && !person.get().isEmpty()) {
 			return copy(person.get());
 		}
 		throw new PersonNotFoundException("Could not find person with name " + lastName);
 	}
 
-	public PersonInput getByFirstName(String firstName) throws PersonNotFoundException {
-		Optional<Person> person = personRepository.findByFirstNameIgnoreCase(firstName);
-		if (person.isPresent()) {
+	public List<PersonInput> getByFirstName(String firstName) throws PersonNotFoundException {
+		Optional<List<Person>> person = personRepository.findByFirstNameIgnoreCase(firstName);
+		if (person.isPresent() && !person.get().isEmpty()) {
 			return copy(person.get());
+		}
+		throw new PersonNotFoundException("Could not find person with name " + firstName);
+
+	}
+
+	public List<PersonInput> getByFirstNameAndLastName(String firstName, String lastName)
+			throws PersonNotFoundException {
+		Optional<List<Person>> persons = personRepository.findByFirstNameAndLastNameIgnoreCase(firstName, lastName);
+		if (persons.isPresent() && !persons.get().isEmpty()) {
+			return copy(persons.get());
 		}
 		throw new PersonNotFoundException("Could not find person with name " + firstName);
 
@@ -99,33 +106,25 @@ public class PersonService {
 		personRepository.deleteAll();
 	}
 
-	public String deleteByFirstName(String firstName) throws PersonNotFoundException {
-
-		Optional<Person> toDelete = personRepository.findByFirstNameIgnoreCase(firstName);
-		if (toDelete.isPresent()) {
-			Long idDeleted = personRepository.deletePersonById(toDelete.get().getId());
-			return String.valueOf(idDeleted);
-		}
-		throw new PersonNotFoundException("Person with given id does not exists");
-	}
 
 	private boolean isExists(PersonInput pers) {
-		Optional<Person> person = personRepository.findByFirstNameAndLastName(pers.getFirst_name(), pers.getLast_name());
-		return person.isPresent();
+		Optional<List<Person>> persons = personRepository.findByFirstNameAndLastNameIgnoreCase(pers.getFirst_name(),
+				pers.getLast_name());
+		return (persons.isPresent() && !persons.get().isEmpty());
 	}
-	
+
 	private List<PersonInput> copy(final List<Person> pList) {
 		List<PersonInput> personList = new ArrayList<PersonInput>(pList.size());
-		for(Person p : pList) {
-			personList.add(copy(p));			
-		}		
-		
+		for (Person p : pList) {
+			personList.add(copy(p));
+		}
+
 		return personList;
 	}
-	
-	
+
 	private PersonInput copy(final Person p) {
-		PersonInput pi = new PersonInput(p.getId(), p.getFirstName(), p.getLastName(), p.getAge(), p.getFavouriteColour(), p.getHobby());
+		PersonInput pi = new PersonInput(p.getId(), p.getFirstName(), p.getLastName(), p.getAge(),
+				p.getFavouriteColour(), p.getHobby());
 		return pi;
 	}
 

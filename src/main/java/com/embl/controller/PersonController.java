@@ -52,13 +52,19 @@ public class PersonController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/api/persons/by-firstname/{firstName}")
-	public PersonInput getByFirstName(@PathVariable String firstName) throws PersonNotFoundException {
+	public List<PersonInput> getByFirstName(@PathVariable String firstName) throws PersonNotFoundException {
 		System.out.println("get person by first name " + firstName);
 		return personService.getByFirstName(firstName);
 	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/api/persons/by-firstname/{firstName}/by-lastname/{lastName}")
+	public List<PersonInput> getByFirstNameAndLastName(@PathVariable String firstName, @PathVariable String lastName) throws PersonNotFoundException {
+		System.out.println("get person by first name " + firstName);
+		return personService.getByFirstNameAndLastName(firstName, lastName);
+	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/api/persons/by-lastname/{lastName}")
-	public PersonInput getBylastName(@PathVariable String lastName) throws PersonNotFoundException {
+	public List<PersonInput> getBylastName(@PathVariable String lastName) throws PersonNotFoundException {
 		System.out.println("get person by last name " + lastName);
 		return personService.getByFirstName(lastName);
 	}

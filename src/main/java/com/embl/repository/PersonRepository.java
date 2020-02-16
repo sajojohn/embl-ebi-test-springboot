@@ -11,9 +11,9 @@ import com.embl.model.Person;
 
 @Repository
 public interface PersonRepository extends MongoRepository<Person, String> {
-	public Optional<Person> findByFirstNameIgnoreCase(String firstName);
+	public Optional<List<Person>> findByFirstNameIgnoreCase(String firstName);
 
-	public Optional<Person> findByLastNameIgnoreCase(String lastName);
+	public Optional<List<Person>> findByLastNameIgnoreCase(String lastName);
 
 	public List<Person> findByAge(Integer age);
 
@@ -25,8 +25,8 @@ public interface PersonRepository extends MongoRepository<Person, String> {
 
 //	@Query("{'firstName': ?0, 'lastName': ?1}")
 //	public Optional<Person> findByName(String firstName, String lastName);
-	
-	public Optional<Person> findByFirstNameAndLastName(String firstName, String lastName);
+
+	public Optional<List<Person>> findByFirstNameAndLastNameIgnoreCase(String firstName, String lastName);
 
 	@Query(value = "{id : $0}", delete = true)
 	public void deleteById(String id);
